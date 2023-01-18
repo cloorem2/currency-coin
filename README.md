@@ -32,3 +32,4 @@ so that forces on the interest rate are balanced.
 # The interest rate is affected only by buying and selling
 Buying the short increases the rate by the same amount as selling the bond,
 and vice versa.
+branch test

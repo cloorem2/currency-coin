@@ -6,7 +6,9 @@ const execSync = require('child_process').execSync;
 
 // const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
 const provider = anchor.AnchorProvider.env();
+// provider.opts.commitment = 'confirmed';
 anchor.setProvider(provider);
+console.log('commitment ' + provider.opts.commitment);
 const payer = provider.wallet as anchor.Wallet;
 const program = anchor.workspace.CurrencyCoin as anchor.Program<CurrencyCoin>;
 
@@ -28,8 +30,11 @@ let balances = {};
 let crank_count = 0;
 let buyAm = 0;
 async function start() {
+  await sleep.sleep(10);
   await init();
   await getBalances();
+  state = await program.account.mintAuth.fetch(mintAuth);
+  print_state();
   while (true) {
     state = await program.account.mintAuth.fetch(mintAuth);
     if (state.maturityState == 0) {
@@ -123,7 +128,7 @@ async function sell_bonds1() {
   const x0 = new anchor.BN(balances[b1Key]/200);
   console.log('   selling ' + x0 + ' b1s');
   if (x0.eq(new anchor.BN(0))) { return; }
-    try {
+    // try {
       await program.methods.sellBonds1(x0,
         mintAuthBump,
         ccMintBump,
@@ -147,14 +152,14 @@ async function sell_bonds1() {
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
       }).signers([payer.payer]).rpc();
       await sleep.sleep(5);
-    } catch { console.log('sellBonds1 fail'); }
+    // } catch { console.log('sellBonds1 fail'); }
 }
 
 async function sell_bonds0() {
   const x0 = new anchor.BN(balances[b0Key]/200);
   console.log('   selling ' + x0 + ' b0s');
   if (x0.eq(new anchor.BN(0))) { return; }
-    try {
+    // try {
       await program.methods.sellBonds0(x0,
         mintAuthBump,
         ccMintBump,
@@ -178,7 +183,7 @@ async function sell_bonds0() {
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
       }).signers([payer.payer]).rpc();
       await sleep.sleep(5);
-    } catch { console.log('sellBonds0 fail'); }
+    // } catch { console.log('sellBonds0 fail'); }
 }
 
 async function buy_bonds1() {
@@ -194,7 +199,7 @@ async function buy_bonds1() {
   console.log('   buying ' + maxx0 + ' shorts and '
     + (buyAm - maxx0).toString() + ' b1s');
   if (maxx0 > 0) {
-    try {
+    // try {
       await program.methods.buyShorts1(
         new anchor.BN(maxx0),
         mintAuthBump,
@@ -219,11 +224,11 @@ async function buy_bonds1() {
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
       }).signers([payer.payer]).rpc();
       await sleep.sleep(5);
-    } catch { console.log('buyShorts1 fail'); }
+    // } catch { console.log('buyShorts1 fail'); }
   }
 
   if (maxx0 < 0) {
-    try {
+    // try {
       await program.methods.sellShorts1(
         new anchor.BN(-maxx0),
         mintAuthBump,
@@ -250,11 +255,11 @@ async function buy_bonds1() {
       await sleep.sleep(5);
       maxx0 = 0;
       await getBalances();
-    } catch { console.log('sellShorts1 fail'); }
+    // } catch { console.log('sellShorts1 fail'); }
   }
 
   if (buyAm - maxx0 > 0) {
-    try {
+    // try {
       await program.methods.buyBonds1(
         new anchor.BN(buyAm - maxx0),
         mintAuthBump,
@@ -279,7 +284,7 @@ async function buy_bonds1() {
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
       }).signers([payer.payer]).rpc();
       await sleep.sleep(5);
-    } catch { console.log('buyBonds1 fail'); }
+    // } catch { console.log('buyBonds1 fail'); }
   }
 }
 
@@ -296,7 +301,7 @@ async function buy_bonds0() {
   console.log('   buying ' + maxx0 + ' shorts and '
     + (buyAm - maxx0).toString() + ' b0s');
   if (maxx0 > 0) {
-    try {
+    // try {
       await program.methods.buyShorts0(
         new anchor.BN(maxx0),
         mintAuthBump,
@@ -321,11 +326,11 @@ async function buy_bonds0() {
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
       }).signers([payer.payer]).rpc();
       await sleep.sleep(5);
-    } catch { console.log('buyShorts0 fail'); }
+    // } catch { console.log('buyShorts0 fail'); }
   }
 
   if (maxx0 < 0) {
-    try {
+    // try {
       await program.methods.sellShorts0(
         new anchor.BN(-maxx0),
         mintAuthBump,
@@ -352,11 +357,11 @@ async function buy_bonds0() {
       await sleep.sleep(5);
       maxx0 = 0;
       await getBalances();
-    } catch { console.log('sellShorts0 fail'); }
+    // } catch { console.log('sellShorts0 fail'); }
   }
 
   if (buyAm - maxx0 > 0) {
-    try {
+    // try {
       await program.methods.buyBonds0(
         new anchor.BN(buyAm - maxx0),
         mintAuthBump,
@@ -381,7 +386,7 @@ async function buy_bonds0() {
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
       }).signers([payer.payer]).rpc();
       await sleep.sleep(5);
-    } catch { console.log('buyBonds0 fail'); }
+    // } catch { console.log('buyBonds0 fail'); }
   }
 }
 
@@ -483,7 +488,7 @@ async function getBalances() {
 
 async function redeem0() {
     console.log('   redeeming b0s  ' + new Date());
-  try {
+  // try {
     await program.methods.redeemBonds0(
       mintAuthBump,
       ccMintBump,
@@ -503,13 +508,13 @@ async function redeem0() {
       owner: payer.publicKey,
       tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
     }).signers([payer.payer]).rpc();
-  } catch {}
+  // } catch {}
   await sleep.sleep(5);
 }
 
 async function redeem1() {
     console.log('   redeeming b1s  ' + new Date());
-  try {
+  // try {
     await program.methods.redeemBonds1(
       mintAuthBump,
       ccMintBump,
@@ -529,12 +534,12 @@ async function redeem1() {
       owner: payer.publicKey,
       tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
     }).signers([payer.payer]).rpc();
-  } catch {}
+  // } catch {}
   await sleep.sleep(5);
 }
 
 async function crank0() {
-  try {
+  // try {
     await program.methods.crank0(
       mintAuthBump, ccMintBump, ccs0MintBump
     ).accounts({
@@ -545,12 +550,12 @@ async function crank0() {
       ccs0TokenAccount: ccs0_ata,
       tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
     }).signers([payer.payer]).rpc();
-  } catch {}
+  // } catch {}
   await sleep.sleep(5);
 }
 
 async function crank1() {
-  try {
+  // try {
     await program.methods.crank1(
       mintAuthBump,
       ccMintBump,
@@ -571,12 +576,12 @@ async function crank1() {
       ccs0TokenAccount: ccs0_ata,
       tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
     }).signers([payer.payer]).rpc();
-  } catch { console.log('crank1 fail'); }
+  // } catch { console.log('crank1 fail'); }
   await sleep.sleep(5);
 }
 
 async function crank3() {
-  try {
+  // try {
     await program.methods.crank3(
       mintAuthBump,
       ccMintBump,
@@ -597,8 +602,19 @@ async function crank3() {
       ccs0TokenAccount: ccs0_ata,
       tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
     }).signers([payer.payer]).rpc();
-  } catch {}
+  // } catch {}
   await sleep.sleep(5);
 }
 
-start();
+// async function start_loop() {
+  // while (true) {
+    try {
+      start();
+    } catch (err) {
+      console.log(err);
+      console.log('starting over');
+    }
+  // }
+// }
+
+// start_loop();
