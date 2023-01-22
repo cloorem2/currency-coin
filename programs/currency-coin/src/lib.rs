@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 pub mod instructions;
 use instructions::*;
 
-declare_id!("HbwxAXk8Zp2Kg5i7xm9XoeyShfGs8SqfzuS3q6AwQbRR");
+declare_id!("Hb2WTf3QB2omkRJYoHZ1fMVw2Pm8EYC6KHoSuPtjpbze");
 
 #[program]
 pub mod currency_coin {
@@ -14,145 +14,33 @@ pub mod currency_coin {
         create_mint_auth::create_mint_auth(ctx)
     }
 
-    pub fn create_cc_mint(
-        ctx: Context<CreateCcMint>,
-        mint_auth_bump: u8,
-    ) -> Result<()> {
-        create_cc_mint::create_cc_mint(
-            ctx, mint_auth_bump
-        )
-    }
-
-    pub fn create_ccb0_mint(
-        ctx: Context<CreateCcb0Mint>,
-        mint_auth_bump: u8,
-    ) -> Result<()> {
-        create_ccb0_mint::create_ccb0_mint(
-            ctx, mint_auth_bump
-        )
-    }
-
-    pub fn create_ccb1_mint(
-        ctx: Context<CreateCcb1Mint>,
-        mint_auth_bump: u8,
-    ) -> Result<()> {
-        create_ccb1_mint::create_ccb1_mint(
-            ctx, mint_auth_bump
-        )
-    }
-
-    pub fn create_ccs0_mint(
-        ctx: Context<CreateCcs0Mint>,
-        mint_auth_bump: u8,
-    ) -> Result<()> {
-        create_ccs0_mint::create_ccs0_mint(
-            ctx, mint_auth_bump
-        )
-    }
-
-    pub fn create_cc_metadata(
-        ctx: Context<CreateCcMetadata>,
-        metadata_title: String,
-        metadata_symbol: String,
-        metadata_uri: String,
-        mint_auth_bump: u8,
-        cc_mint_bump: u8,
-    ) -> Result<()> {
-        create_cc_metadata::create_cc_metadata(
-            ctx,
-            metadata_title,
-            metadata_symbol,
-            metadata_uri,
-            mint_auth_bump,
-            cc_mint_bump
-        )
-    }
-
-    pub fn init_cc_ata(
-        ctx: Context<InitCcAta>,
-        mint_auth_bump: u8,
-        mint_bump: u8,
-    ) -> Result<()> {
-        init_cc_ata::init_cc_ata(
-            ctx, mint_auth_bump, mint_bump
-        )
-    }
-
-    pub fn init_ccb0_ata(
-        ctx: Context<InitCcb0Ata>,
-        mint_auth_bump: u8,
-        mint_bump: u8,
-    ) -> Result<()> {
-        init_ccb0_ata::init_ccb0_ata(
-            ctx, mint_auth_bump, mint_bump
-        )
-    }
-
-    pub fn init_ccb1_ata(
-        ctx: Context<InitCcb1Ata>,
-        mint_auth_bump: u8,
-        mint_bump: u8,
-    ) -> Result<()> {
-        init_ccb1_ata::init_ccb1_ata(
-            ctx, mint_auth_bump, mint_bump
-        )
-    }
-
-    pub fn init_ccs0_ata(
-        ctx: Context<InitCcs0Ata>,
-        mint_auth_bump: u8,
-        mint_bump: u8,
-    ) -> Result<()> {
-        init_ccs0_ata::init_ccs0_ata(
-            ctx, mint_auth_bump, mint_bump
-        )
-    }
-
-    pub fn init_circulation(
-        ctx: Context<InitCirculation>,
-        mint_auth_bump: u8,
-        cc_mint_bump: u8,
-        ccb0_mint_bump: u8,
-    ) -> Result<()> {
-        init_circulation::init_circulation(
-            ctx,
-            mint_auth_bump,
-            cc_mint_bump,
-            ccb0_mint_bump,
-        )
-    }
-
-    pub fn init_pool0(
-        ctx: Context<InitPool0>,
-        mint_auth_bump: u8,
-        cc_mint_bump: u8,
-        ccb0_mint_bump: u8,
-        ccs0_mint_bump: u8,
-    ) -> Result<()> {
-        init_pool0::init_pool0(
-            ctx,
-            mint_auth_bump,
-            cc_mint_bump,
-            ccb0_mint_bump,
-            ccs0_mint_bump,
-        )
-    }
-
-    pub fn init_owner_ata(
-        ctx: Context<InitOwnerAta>,
-        mint_auth_bump: u8
-    ) -> Result<()> {
-        init_owner_ata::init_owner_ata(ctx, mint_auth_bump)
-    }
-
     pub fn crank0(
         ctx: Context<Crank0>,
         mint_auth_bump: u8,
         cc_mint_bump: u8,
+        ccb0_mint_bump: u8,
         ccs0_mint_bump: u8,
     ) -> Result<()> {
         crank0::crank0(
-            ctx, mint_auth_bump, cc_mint_bump, ccs0_mint_bump
+            ctx, mint_auth_bump,
+            cc_mint_bump,
+            ccb0_mint_bump,
+            ccs0_mint_bump
+        )
+    }
+
+    pub fn crank2(
+        ctx: Context<Crank2>,
+        mint_auth_bump: u8,
+        cc_mint_bump: u8,
+        ccb1_mint_bump: u8,
+        ccs0_mint_bump: u8,
+    ) -> Result<()> {
+        crank2::crank2(
+            ctx, mint_auth_bump,
+            cc_mint_bump,
+            ccb1_mint_bump,
+            ccs0_mint_bump
         )
     }
 

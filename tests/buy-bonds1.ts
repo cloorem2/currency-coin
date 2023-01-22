@@ -2,8 +2,8 @@ import * as anchor from "@project-serum/anchor";
 import { CurrencyCoin } from "../target/types/currency_coin";
 
 describe("currency-coin", () => {
-  // const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
-  const provider = anchor.AnchorProvider.env();
+  const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
+  // const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
   const payer = provider.wallet as anchor.Wallet;
   const program = anchor.workspace.CurrencyCoin as anchor.Program<CurrencyCoin>;
@@ -64,7 +64,7 @@ describe("currency-coin", () => {
     console.log(`owner_ccb1_ata ${owner_ccb1_ata}`);
 
     await program.methods.buyBonds1(
-      new anchor.BN(49),
+      new anchor.BN(21493),
       mintAuthBump,
       ccMintBump,
       ccb1MintBump,
@@ -72,15 +72,16 @@ describe("currency-coin", () => {
     ).accounts({
       mintAuthority: mintAuth,
 
-      ccMintAccount: ccMint,
-      ccb1MintAccount: ccb1Mint,
-      ccs0MintAccount: ccs0Mint,
+      ccMint: ccMint,
+      ccb1Mint: ccb1Mint,
+      ccs0Mint: ccs0Mint,
 
-      ownerCcAccount: owner_cc_ata,
-      ownerCcb1Account: owner_ccb1_ata,
-      ccAccount: cc_ata,
-      ccb1Account: ccb1_ata,
-      ccs0Account: ccs0_ata,
+      ownerCcToken: owner_cc_ata,
+      ownerCcb1Token: owner_ccb1_ata,
+
+      ccToken: cc_ata,
+      ccb1Token: ccb1_ata,
+      ccs0Token: ccs0_ata,
       owner: payer.publicKey,
       tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
     }).signers([payer.payer]).rpc();

@@ -2,8 +2,8 @@ import * as anchor from "@project-serum/anchor";
 import { CurrencyCoin } from "../target/types/currency_coin";
 
 describe("currency-coin", () => {
-  // const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
-  const provider = anchor.AnchorProvider.env();
+  const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
+  // const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
   const payer = provider.wallet as anchor.Wallet;
   const program = anchor.workspace.CurrencyCoin as anchor.Program<CurrencyCoin>;
@@ -72,15 +72,15 @@ describe("currency-coin", () => {
     ).accounts({
       mintAuthority: mintAuth,
 
-      ccMintAccount: ccMint,
-      ccb0MintAccount: ccb0Mint,
-      ccb1MintAccount: ccb1Mint,
-      ccs0MintAccount: ccs0Mint,
+      ccMint: ccMint,
+      ccb0Mint: ccb0Mint,
+      ccb1Mint: ccb1Mint,
+      ccs0Mint: ccs0Mint,
 
-      ccTokenAccount: cc_ata,
-      ccb0TokenAccount: ccb0_ata,
-      ccb1TokenAccount: ccb1_ata,
-      ccs0TokenAccount: ccs0_ata,
+      ccToken: cc_ata,
+      ccb0Token: ccb0_ata,
+      ccb1Token: ccb1_ata,
+      ccs0Token: ccs0_ata,
       tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
     }).signers([payer.payer]).rpc();
   });
