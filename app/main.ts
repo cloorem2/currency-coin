@@ -42,6 +42,9 @@ async function start() {
       if (balances[b1Key] > 0) {
         await redeem1();
         await getBalances();
+        buyAm = balances[ccKey];
+        await buy_bonds0();
+        await getBalances();
         /*
         var ima = state.ima0*60*60*24*365;
         if (ima < 5) {
@@ -74,6 +77,9 @@ async function start() {
     if (state.maturityState == 2) {
       if (balances[b0Key] > 0) {
         await redeem0();
+        await getBalances();
+        buyAm = balances[ccKey];
+        await buy_bonds1();
         await getBalances();
         /*
         var ima = state.ima0*60*60*24*365;

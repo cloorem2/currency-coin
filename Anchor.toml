@@ -1,13 +1,13 @@
 [features]
 seeds = false
-[programs.localnet]
-currency_coin = "Hb2WTf3QB2omkRJYoHZ1fMVw2Pm8EYC6KHoSuPtjpbze"
+[programs.devnet]
+currency_coin = "A3mhZsPAjroa8oQokfjGKNNNrKwbpz5ZwszHduYs6hz6"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/hedgehog/.config/solana/id.json"
 
 [scripts]
