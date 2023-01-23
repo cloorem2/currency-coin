@@ -67,7 +67,7 @@ pub fn crank0(
 
     let clock: Clock = Clock::get().unwrap();
     // if ctx.accounts.cc_token.amount >= 3 * ctx.accounts.ccb0_token.amount {
-    let spw = 60*30; // 60*60*24*7;
+    let spw = 60*60*24*7;
     if clock.unix_timestamp % spw < pool0.timestamp % spw {
         pool0.maturity_state = 1;
     }

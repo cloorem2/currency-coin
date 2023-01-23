@@ -4,18 +4,18 @@ import { CurrencyCoin } from "../target/types/currency_coin";
 const sleep = require("sleep");
 const execSync = require('child_process').execSync;
 
-const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
-// const provider = anchor.AnchorProvider.env();
+// const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
+const provider = anchor.AnchorProvider.env();
 // provider.opts.commitment = 'confirmed';
 anchor.setProvider(provider);
 console.log('commitment ' + provider.opts.commitment);
 const payer = provider.wallet as anchor.Wallet;
 const program = anchor.workspace.CurrencyCoin as anchor.Program<CurrencyCoin>;
 
-const ccKey = "BGf9p8E1qy9KJs4JUAYAZLocpFuL2zjGBqrcMmS4jyuS";
-const b0Key = "9VAJkNVfWqZDBLigaPi5hx7eqz5BTrcMxgUxbVUwMtxp";
-const b1Key = "967tDQdTPQDYiQmx7S3gmJDSZVM9xDcaycuVxQQ45CtM";
-const s0Key = "Hb8K2dK7NxB5VLPyAtEqWc8b4Z8iG3H5wK5tVkGABwwa";
+const ccKey = "5jGmQSUMvQ5dKrLXuh3oUjczWWLefUEQHX3EGKXnLjjS";
+const b0Key = "GVWmAjaond6PrChG4bPZRWRbQAs2gwFbHE5t3NfUhbft";
+const b1Key = "7c72g38GCvGyNqBL7zEdQS7nHq9DfiRAUQcRiSDH5FDx";
+const s0Key = "EBj4FTsN2BHbNtbctvzCX96JS3ksB8z1ukWcZQjqCujr";
 
 var mintAuth, mintAuthBump;
 var ccMint, ccMintBump;
@@ -43,8 +43,8 @@ async function start() {
         await redeem1();
         await getBalances();
         buyAm = balances[ccKey];
-        await buy_bonds0();
-        await getBalances();
+        // await buy_bonds0();
+        // await getBalances();
         /*
         var ima = state.ima0*60*60*24*365;
         if (ima < 5) {
@@ -79,8 +79,8 @@ async function start() {
         await redeem0();
         await getBalances();
         buyAm = balances[ccKey];
-        await buy_bonds1();
-        await getBalances();
+        // await buy_bonds1();
+        // await getBalances();
         /*
         var ima = state.ima0*60*60*24*365;
         if (ima < 5) {
@@ -510,7 +510,7 @@ async function getBalances() {
 }
 
 async function getPBalances() {
-  const res = execSync('spl-token accounts --owner 211wT7Rp24qhArGWQgK37jkho55tTgVtMRgAiogqrQ2r',{encoding:'utf8'});
+  const res = execSync('spl-token accounts --owner 5Ju8Dax7SgVsygfwkkuDX1eoJHwCQFgjpiCSctjrPZoC',{encoding:'utf8'});
   const lines = res.split('\n');
   for (var i=2;i<lines.length;i++) {
     const lst = lines[i].split(' ');
