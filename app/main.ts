@@ -34,10 +34,16 @@ async function start() {
   await sleep.sleep(10);
   await init();
   await getBalances();
-  state = await program.account.mintAuth.fetch(mintAuth);
-  print_state();
+  try {
+    var tstate = await program.account.mintAuth.fetch(mintAuth);
+    state = tstate;
+    print_state();
+  } catch { }
   while (true) {
-    state = await program.account.mintAuth.fetch(mintAuth);
+    try {
+      var tstate = await program.account.mintAuth.fetch(mintAuth);
+      state = tstate;
+    } catch {}
     if (state.maturityState == 0) {
       if (balances[b1Key] > 0) {
         await redeem1();
@@ -70,9 +76,12 @@ async function start() {
       await crank1();
       console.log();
       console.log('new run');
-      state = await program.account.mintAuth.fetch(mintAuth);
       crank_count = 0;
-      print_state();
+      try {
+        var tstate = await program.account.mintAuth.fetch(mintAuth);
+        state = tstate;
+        print_state();
+      } catch {}
     }
     if (state.maturityState == 2) {
       if (balances[b0Key] > 0) {
@@ -106,9 +115,12 @@ async function start() {
       await crank3();
       console.log();
       console.log('new run');
-      state = await program.account.mintAuth.fetch(mintAuth);
       crank_count = 0;
-      print_state();
+      try {
+        var tstate = await program.account.mintAuth.fetch(mintAuth);
+        state = tstate;
+        print_state();
+      } catch {}
     }
   }
 }
@@ -493,40 +505,44 @@ async function init() {
 }
 
 async function getBalances() {
-  const res = execSync('spl-token accounts',{encoding:'utf8'});
-  const lines = res.split('\n');
-  for (var i=2;i<lines.length;i++) {
-    const lst = lines[i].split(' ');
-    if (lst.length < 2) continue;
-    for (var ii=0;ii<lst.length;ii++) {
-      balances[lst[0].toString()] = Number(lst[2]);
+  try {
+    const res = execSync('spl-token accounts',{encoding:'utf8'});
+    const lines = res.split('\n');
+    for (var i=2;i<lines.length;i++) {
+      const lst = lines[i].split(' ');
+      if (lst.length < 2) continue;
+      for (var ii=0;ii<lst.length;ii++) {
+        balances[lst[0].toString()] = Number(lst[2]);
+      }
     }
-  }
-  console.log('ccKey ',balances[ccKey]);
-  console.log('b0Key ',balances[b0Key]);
-  console.log('b1Key ',balances[b1Key]);
-  console.log('s0Key ',balances[s0Key]);
+    console.log('ccKey ',balances[ccKey]);
+    console.log('b0Key ',balances[b0Key]);
+    console.log('b1Key ',balances[b1Key]);
+    console.log('s0Key ',balances[s0Key]);
+  } catch { }
   await getPBalances();
 }
 
 async function getPBalances() {
-  const res = execSync('spl-token accounts --owner 5Ju8Dax7SgVsygfwkkuDX1eoJHwCQFgjpiCSctjrPZoC',{encoding:'utf8'});
-  const lines = res.split('\n');
-  for (var i=2;i<lines.length;i++) {
-    const lst = lines[i].split(' ');
-    if (lst.length < 2) continue;
-    for (var ii=0;ii<lst.length;ii++) {
-      pbalances[lst[0].toString()] = Number(lst[2]);
+  try {
+    const res = execSync('spl-token accounts --owner 5Ju8Dax7SgVsygfwkkuDX1eoJHwCQFgjpiCSctjrPZoC',{encoding:'utf8'});
+    const lines = res.split('\n');
+    for (var i=2;i<lines.length;i++) {
+      const lst = lines[i].split(' ');
+      if (lst.length < 2) continue;
+      for (var ii=0;ii<lst.length;ii++) {
+        pbalances[lst[0].toString()] = Number(lst[2]);
+      }
     }
-  }
-  let ccb = pbalances[b0Key] + pbalances[b1Key];
-  let cc0 = pbalances[ccKey] - ccb;
-  let ccs = pbalances[s0Key];
-  console.log('program balances');
-  console.log('cc0   ',cc0,'      ccKey ',pbalances[ccKey]);
-  console.log('ccb   ',ccb,'      b0Key ',pbalances[b0Key]);
-  console.log('cc1   ',ccb,'      b1Key ',pbalances[b1Key]);
-  console.log('ccs   ',ccs,'      s0Key ',pbalances[s0Key]);
+    let ccb = pbalances[b0Key] + pbalances[b1Key];
+    let cc0 = pbalances[ccKey] - ccb;
+    let ccs = pbalances[s0Key];
+    console.log('program balances');
+    console.log('cc0   ',cc0,'      ccKey ',pbalances[ccKey]);
+    console.log('ccb   ',ccb,'      b0Key ',pbalances[b0Key]);
+    console.log('cc1   ',ccb,'      b1Key ',pbalances[b1Key]);
+    console.log('ccs   ',ccs,'      s0Key ',pbalances[s0Key]);
+  } catch {}
 }
 
 async function redeem0() {

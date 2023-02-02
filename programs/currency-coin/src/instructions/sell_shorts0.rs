@@ -24,11 +24,14 @@ pub fn sell_shorts0(
     assert_eq!(cc_to_owner > 0, true);
 
     let r3 = (ctx.accounts.ccb0_token.amount - cc_to_owner) as f64;
+    // lets not leave the dust on shorts
+    /*
     let s0_from_owner = (r0 *
         ((r1 / r3).powf(ctx.accounts.mint_authority.smod) - 1.0)
     ).ceil() as u64;
     // this should be unnecessary but it's nice anyway
     assert_eq!(s0_from_owner <= amount, true);
+    */
 
     let cr0 = (ctx.accounts.cc_token.amount
         - ctx.accounts.ccb0_token.amount) as f64;
@@ -59,7 +62,9 @@ pub fn sell_shorts0(
                 to: ctx.accounts.ccs0_token.to_account_info(),
                 authority: ctx.accounts.owner.to_account_info(),
             },
-        ), s0_from_owner,
+            // not leaving dust
+        // ), s0_from_owner,
+        ), amount,
     )?;
     token::burn(
         CpiContext::new_with_signer(
